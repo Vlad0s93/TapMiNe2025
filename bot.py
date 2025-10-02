@@ -5,7 +5,7 @@ from aiogram.filters import Command
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 import asyncio
 
-TOKEN = "YOUR_BOT_TOKEN"
+TOKEN = "8451357175:AAEpPLysIpO4m2LmPNRvyxs7_jRAYsfiBhU"
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
 
@@ -65,4 +65,5 @@ async def balance(message: types.Message):
 if __name__ == "__main__":
     import logging
     logging.basicConfig(level=logging.INFO)
+
     asyncio.run(dp.start_polling(bot))
