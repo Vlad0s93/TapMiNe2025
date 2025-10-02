@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>TapBank Game</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body { font-family: Arial; text-align:center; margin:0; padding:0; background:#f0f2f5;}
+#container { margin-top:50px; }
+button { font-size: 24px; padding:20px 40px; border:none; border-radius:10px; background:#0088cc; color:white; cursor:pointer; }
+button:active { background:#006699; }
+#timer, #score { font-size:24px; margin:20px; }
+</style>
+</head>
+<body>
+<div id="container">
+  <h2>🎮 TapBank</h2>
+  <div id="timer">Час: 10</div>
+  <div id="score">Taps: 0</div>
+  <button id="tapBtn">TAP! 🔴</button>
+  <p id="result"></p>
+  <button id="withdrawBtn">Запросити вивід 💰</button>
+</div>
+
+<script>
+let taps = 0;
+let timeLeft = 10;
+let gameOver = false;
+
+const tapBtn = document.getElementById("tapBtn");
+const withdrawBtn = document.getElementById("withdrawBtn");
+const timerEl = document.getElementById("timer");
+const scoreEl = document.getElementById("score");
+const resultEl = document.getElementById("result");
+
+tapBtn.onclick = function() {
+  if(gameOver) return;
+  taps++;
+  scoreEl.innerText = "Taps: " + taps;
+}
+
+const timer = setInterval(() => {
+  timeLeft--;
+  timerEl.innerText = "Час: " + timeLeft;
+  if(timeLeft <= 0){
+    clearInterval(timer);
+    gameOver = true;
+    resultEl.innerText = "Гра завершена! Твої тапи: " + taps;
+    tapBtn.disabled = true;
+    sendResult(taps);
+  }
+}, 1000);
+
+function sendResult(taps){
+  if(window.Telegram.WebApp){
+    Telegram.WebApp.sendData(JSON.stringify({taps: taps}));
+  } else {
+    console.log("Taps: " + taps);
+  }
+}
+
+withdrawBtn.onclick = function(){
+  if(window.Telegram.WebApp){
+    Telegram.WebApp.sendData(JSON.stringify({withdraw: true}));
+  } else {
+    alert("Запросити вивід можна тільки через Telegram WebApp!");
+  }
+}
+</script>
+</body>
+</html>
